@@ -1,0 +1,525 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Zomato - Online Food Ordering</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+
+        /* Navigation */
+        .navbar {
+            background-color: white;
+            padding: 20px;
+            text-align: right;
+        }
+
+        .logo {
+            color: #e23744;
+            font-size: 28px;
+            font-weight: bold;
+            float: left;
+        }
+
+        .navbar button {
+            background: none;
+            border: none;
+            font-size: 16px;
+            margin: 5px 12px;
+            cursor: pointer;
+        }
+
+        .navbar button:hover {
+            color: #e23744;
+        }
+
+        /* Home Banner */
+        .banner {
+            background-color: #e23744;
+            color: white;
+            text-align: center;
+            padding: 55px 15px;
+        }
+
+        .banner h1 {
+            font-size: 38px;
+        }
+
+        .section {
+            text-align: center;
+            padding: 30px 15px;
+        }
+
+        /* Food Cards */
+        .food {
+            display: inline-block;
+            background-color: white;
+            width: 250px;
+            margin: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .food img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .food h3 {
+            margin-bottom: 8px;
+        }
+
+        .price {
+            color: #e23744;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .food button, .main-button {
+            background-color: #e23744;
+            color: white;
+            border: none;
+            padding: 11px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .food button:hover, .main-button:hover {
+            background-color: #bd1e2d;
+        }
+
+        /* Pages */
+        .page {
+            display: none;
+            min-height: 450px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Cart */
+        .cart-item {
+            background-color: white;
+            padding: 15px;
+            margin: 12px auto;
+            max-width: 600px;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .cart-item button {
+            padding: 6px 10px;
+            margin: 4px;
+            cursor: pointer;
+        }
+
+        .total {
+            font-size: 23px;
+            font-weight: bold;
+            color: #e23744;
+            margin: 25px;
+        }
+
+        /* Checkout */
+        .checkout-box {
+            background-color: white;
+            max-width: 450px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .checkout-box input,
+        .checkout-box textarea {
+            width: 95%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #292929;
+            color: white;
+            text-align: center;
+            padding: 22px;
+            margin-top: 30px;
+        }
+
+        @media screen and (max-width: 600px) {
+            .navbar {
+                text-align: center;
+            }
+
+            .logo {
+                float: none;
+                display: block;
+                margin-bottom: 15px;
+            }
+
+            .food {
+                width: 85%;
+            }
+
+            .banner h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <span class="logo">zomato</span>
+
+        <button onclick="showPage('home')">Home</button>
+        <button onclick="showPage('cart')">
+            Cart (<span id="cartCount">0</span>)
+        </button>
+    </div>
+
+
+    <!-- HOME PAGE -->
+    <div id="home" class="page active">
+
+        <div class="banner">
+            <h1>Discover Great Food Near You!</h1>
+            <p>Your favourite food, delivered to your doorstep.</p>
+        </div>
+
+        <div class="section">
+            <h2>Our Popular Food Items</h2>
+
+            <div class="food">
+                <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400" alt="Pizza">
+                <h3>Cheese Pizza</h3>
+                <p>Fresh pizza with delicious cheese.</p>
+                <p class="price">₹199</p>
+                <button onclick="addToCart('Cheese Pizza', 199)">
+                    Add to Cart
+                </button>
+            </div>
+
+            <div class="food">
+                <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=400" alt="Burger">
+                <h3>Classic Burger</h3>
+                <p>Fresh burger with crispy vegetables.</p>
+                <p class="price">₹149</p>
+                <button onclick="addToCart('Classic Burger', 149)">
+                    Add to Cart
+                </button>
+            </div>
+
+            <div class="food">
+                <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400" alt="Indian food">
+                <h3>Indian Thali</h3>
+                <p>A delicious traditional Indian meal.</p>
+                <p class="price">₹179</p>
+                <button onclick="addToCart('Indian Thali', 179)">
+                    Add to Cart
+                </button>
+            </div>
+
+            <div class="food">
+                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400" alt="Salad">
+                <h3>Healthy Salad</h3>
+                <p>Fresh and healthy salad bowl.</p>
+                <p class="price">₹129</p>
+                <button onclick="addToCart('Healthy Salad', 129)">
+                    Add to Cart
+                </button>
+            </div>
+
+            <div class="food">
+                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400" alt="Burger">
+                <h3>Cheese Burger</h3>
+                <p>Juicy burger with melted cheese.</p>
+                <p class="price">₹189</p>
+                <button onclick="addToCart('Cheese Burger', 189)">
+                    Add to Cart
+                </button>
+            </div>
+
+            <div class="food">
+                <img src="https://images.unsplash.com/photo-1579751626657-72bc17010498?w=400" alt="Food">
+                <h3>Special Meal</h3>
+                <p>A tasty meal for your hunger.</p>
+                <p class="price">₹219</p>
+                <button onclick="addToCart('Special Meal', 219)">
+                    Add to Cart
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- CART PAGE -->
+    <div id="cart" class="page">
+
+        <h1>My Shopping Cart</h1>
+
+        <div id="cartItems">
+            <p>Your cart is empty.</p>
+        </div>
+
+        <div class="total">
+            Total: ₹<span id="totalPrice">0</span>
+        </div>
+
+        <button class="main-button" onclick="showPage('home')">
+            Continue Shopping
+        </button>
+
+        <button class="main-button" onclick="goToCheckout()">
+            Proceed to Checkout
+        </button>
+
+    </div>
+
+
+    <!-- CHECKOUT PAGE -->
+    <div id="checkout" class="page">
+
+        <h1>Checkout</h1>
+        <p>Please enter your delivery details.</p>
+
+        <div class="checkout-box">
+
+            <form onsubmit="placeOrder(event)">
+
+                <label>Full Name</label>
+                <input type="text" id="customerName"
+                placeholder="Enter your name" required>
+
+                <label>Phone Number</label>
+                <input type="tel" id="phone"
+                placeholder="Enter your phone number"
+                pattern="[0-9]{10}" required>
+
+                <label>Delivery Address</label>
+                <textarea id="address"
+                placeholder="Enter your complete address"
+                rows="4" required></textarea>
+
+                <h3>Order Total: ₹<span id="checkoutTotal">0</span></h3>
+
+                <button type="submit" class="main-button">
+                    Place Order
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ORDER SUCCESS PAGE -->
+    <div id="success" class="page">
+
+        <h1 style="color: green;">Order Placed Successfully!</h1>
+
+        <h2>Thank you for ordering with Zomato!</h2>
+
+        <p id="thankYou"></p>
+
+        <p>Your food order has been received.</p>
+
+        <button class="main-button" onclick="showPage('home')">
+            Back to Home
+        </button>
+
+    </div>
+
+
+    <!-- FOOTER -->
+    <footer>
+        <h3>zomato</h3>
+        <p>Discover food. Explore restaurants. Enjoy your meals.</p>
+        <p>© 2026 Zomato Food Ordering Website</p>
+    </footer>
+
+
+    <!-- JAVASCRIPT -->
+    <script>
+
+        var cart = [];
+
+        // Change Pages
+        function showPage(pageName) {
+
+            var pages = document.getElementsByClassName("page");
+
+            for (var i = 0; i < pages.length; i++) {
+                pages[i].classList.remove("active");
+            }
+
+            document.getElementById(pageName).classList.add("active");
+
+            if (pageName == "cart") {
+                displayCart();
+            }
+        }
+
+
+        // Add Food to Cart
+        function addToCart(name, price) {
+
+            var found = false;
+
+            for (var i = 0; i < cart.length; i++) {
+
+                if (cart[i].name == name) {
+                    cart[i].quantity++;
+                    found = true;
+                }
+            }
+
+            if (found == false) {
+                cart.push({
+                    name: name,
+                    price: price,
+                    quantity: 1
+                });
+            }
+
+            updateCount();
+
+            alert(name + " added to cart!");
+
+            showPage("cart");
+        }
+
+
+        // Update Cart Count
+        function updateCount() {
+
+            var count = 0;
+
+            for (var i = 0; i < cart.length; i++) {
+                count = count + cart[i].quantity;
+            }
+
+            document.getElementById("cartCount").innerHTML = count;
+        }
+
+
+        // Display Cart Items
+        function displayCart() {
+
+            var cartDiv = document.getElementById("cartItems");
+            var total = 0;
+
+            cartDiv.innerHTML = "";
+
+            if (cart.length == 0) {
+                cartDiv.innerHTML = "<p>Your cart is empty.</p>";
+            }
+
+            for (var i = 0; i < cart.length; i++) {
+
+                var item = cart[i];
+
+                total = total + item.price * item.quantity;
+
+                cartDiv.innerHTML +=
+                    "<div class='cart-item'>" +
+                    "<h3>" + item.name + "</h3>" +
+                    "<p>Price: ₹" + item.price + "</p>" +
+                    "<p>Quantity: " +
+                    "<button onclick='changeQuantity(" + i + ", -1)'>-</button>" +
+                    item.quantity +
+                    "<button onclick='changeQuantity(" + i + ", 1)'>+</button>" +
+                    "</p>" +
+                    "<p>Subtotal: ₹" + (item.price * item.quantity) + "</p>" +
+                    "<button onclick='removeItem(" + i + ")'>Remove</button>" +
+                    "</div>";
+            }
+
+            document.getElementById("totalPrice").innerHTML = total;
+            document.getElementById("checkoutTotal").innerHTML = total;
+        }
+
+
+        // Change Quantity
+        function changeQuantity(index, amount) {
+
+            cart[index].quantity = cart[index].quantity + amount;
+
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+
+            updateCount();
+            displayCart();
+        }
+
+
+        // Remove Item
+        function removeItem(index) {
+
+            cart.splice(index, 1);
+
+            updateCount();
+            displayCart();
+        }
+
+
+        // Go to Checkout
+        function goToCheckout() {
+
+            if (cart.length == 0) {
+                alert("Your cart is empty!");
+            }
+            else {
+                displayCart();
+                showPage("checkout");
+            }
+        }
+
+
+        // Place Order
+        function placeOrder(event) {
+
+            event.preventDefault();
+
+            var name = document.getElementById("customerName").value;
+
+            document.getElementById("thankYou").innerHTML =
+                "Thank you, " + name + "! Your order has been placed.";
+
+            cart = [];
+
+            updateCount();
+
+            document.getElementById("customerName").value = "";
+            document.getElementById("phone").value = "";
+            document.getElementById("address").value = "";
+
+            showPage("success");
+        }
+
+    </script>
+
+</body>
+</html>
